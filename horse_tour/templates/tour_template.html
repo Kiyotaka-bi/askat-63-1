@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Конные туры</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; padding: 20px; }
+        .location-card { 
+            border: 2px solid #2e7d32; 
+            border-radius: 10px; 
+            padding: 20px; 
+            margin-bottom: 20px; 
+            background-color: #f1f8e9;
+        }
+        .category { 
+            display: inline-block; 
+            background: #4caf50; 
+            color: white; 
+            padding: 3px 10px; 
+            border-radius: 15px; 
+            font-size: 0.8em; 
+        }
+        .comments-section { 
+            margin-top: 15px; 
+            background: white; 
+            padding: 10px; 
+            border-radius: 5px; 
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🐎 Программа Конных Туров</h1>
+    <hr>
+
+    {% for loc in locations %}
+    <div class="location-card">
+        <h2>Маршрут: {{ loc.title }}</h2>
+        <p>{{ loc.description }}</p>
+
+        <p><b>Категории:</b> 
+            {% for cat in loc.categories.all %}
+                <span class="category">{{ cat.name }}</span>
+            {% empty %}
+                <span>Без категории</span>
+            {% endfor %}
+        </p>
+
+        <div class="comments-section">
+            <h4>Отзывы о местности (ForeignKey):</h4>
+            {% for comment in loc.comments.all %}
+                <p style="border-bottom: 1px dashed #ccc; padding-bottom: 5px;">
+                    🗨 {{ comment.text }}
+                </p>
+            {% empty %}
+                <p>Пока никто не оставил отзыв.</p>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+
+</body>
+</html>

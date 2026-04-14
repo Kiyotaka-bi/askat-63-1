@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список анкет</title>
+</head>
+<body>
+    <h1>Школьные анкеты</h1>
+    <a href="{% url 'q_create' %}"><button>Заполнить новую анкету</button></a>
+    <hr>
+
+    {% for a in anketas %}
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        <h3>{{ a.full_name }}</h3>
+        <p><b>Возраст:</b> {{ a.age }}</p>
+        <p><b>Любимый предмет:</b> {{ a.favorite_subject }}</p>
+        
+        <a href="{% url 'q_update' a.pk %}">Редактировать</a> | 
+        <a href="{% url 'q_delete' a.pk %}">Удалить</a>
+    </div>
+    {% empty %}
+        <p>Анкет пока нет. Будь первым!</p>
+    {% endfor %}
+</body>
+</html>
