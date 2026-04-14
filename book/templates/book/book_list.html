@@ -1,20 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Books</title>
+    <meta charset="UTF-8">
+    <title>Моя библиотека</title>
 </head>
 <body>
 
-<h1>Список книг</h1>
+<h1>Список всех книг</h1>
 
 {% for book in books %}
-    <p>
-        <a href="{% url 'book_detail' book.pk %}">
-            {{ book.title }}
-        </a>
-    </p>
+    <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+        <h2>
+            <a href="{% url 'book_detail' book.pk %}">{{ book.title }}</a>
+        </h2>
+
+        <p><strong>Инвентарный код:</strong> 
+            {{ book.inventory_code.code_number|default:"Код не присвоен" }}
+        </p>
+
+        <p><strong>Жанры:</strong> 
+            {% for genre in book.genres.all %}
+                <span style="background: #f0f0f0; padding: 2px 5px; border-radius: 4px;">{{ genre.name }}</span>
+            {% empty %}
+                Жанры не указаны
+            {% endfor %}
+        </p>
+
+        <div style="margin-top: 10px; background: #fafafa; padding: 10px;">
+            <h4>Последние отзывы:</h4>
+            {% for review in book.reviews.all %}
+                <p><i>"{{ review.review_text }}"</i> — <strong>{{ review.author_name }}</strong></p>
+            {% empty %}
+                <p>Пока нет отзывов.</p>
+            {% endfor %}
+        </div>
+    </div>
 {% empty %}
-    <p>Нет книг</p>
+    <p>В библиотеке пока пусто.</p>
 {% endfor %}
 
 </body>
