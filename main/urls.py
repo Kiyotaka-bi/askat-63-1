@@ -21,11 +21,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from book.views import first_message_view
-
+from book import views   
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('first_message/', first_message_view)
+    path('first_message/', first_message_view),  
+    path('', views.book_list, name='book_list'),
+    path('book/<int:pk>/', views.book_detail, name='book_detail'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

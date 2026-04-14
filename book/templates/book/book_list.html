@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Books</title>
+</head>
+<body>
+
+<h1>Список книг</h1>
+
+{% for book in books %}
+    <p>
+        <a href="{% url 'book_detail' book.pk %}">
+            {{ book.title }}
+        </a>
+    </p>
+{% empty %}
+    <p>Нет книг</p>
+{% endfor %}
+
+</body>
+</html>
