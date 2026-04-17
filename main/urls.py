@@ -35,6 +35,9 @@ urlpatterns = [
     path('anketa/', include('questionnaire.urls')),
     
     path('horse/', include('horse_tour.urls')),
+
+    path('captcha/', include('captcha.urls')),
+    path('', include('users.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

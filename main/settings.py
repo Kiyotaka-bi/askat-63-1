@@ -41,7 +41,12 @@ INSTALLED_APPS = [
     'book',
     'horse_tour',
     'questionnaire',
+    'users',
+    'captcha',
+
 ]
+AUTH_USER_MODEL =  'users.CustomUser'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
