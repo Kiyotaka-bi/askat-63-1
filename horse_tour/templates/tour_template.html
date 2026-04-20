@@ -30,34 +30,52 @@
 </head>
 <body>
 
-    <h1>🐎 Программа Конных Туров</h1>
-    <hr>
+<h1>🐎 Программа Конных Туров</h1>
+<hr>
 
-    {% for loc in locations %}
-    <div class="location-card">
-        <h2>Маршрут: {{ loc.title }}</h2>
-        <p>{{ loc.description }}</p>
+{% for loc in page_obj %}
+<div class="location-card">
+    <h2>Маршрут: {{ loc.title }}</h2>
+    <p>{{ loc.description }}</p>
 
-        <p><b>Категории:</b> 
-            {% for cat in loc.categories.all %}
-                <span class="category">{{ cat.name }}</span>
-            {% empty %}
-                <span>Без категории</span>
-            {% endfor %}
-        </p>
+    <p><b>Категории:</b> 
+        {% for cat in loc.categories.all %}
+            <span class="category">{{ cat.name }}</span>
+        {% empty %}
+            <span>Без категории</span>
+        {% endfor %}
+    </p>
 
-        <div class="comments-section">
-            <h4>Отзывы о местности (ForeignKey):</h4>
-            {% for comment in loc.comments.all %}
-                <p style="border-bottom: 1px dashed #ccc; padding-bottom: 5px;">
-                    🗨 {{ comment.text }}
-                </p>
-            {% empty %}
-                <p>Пока никто не оставил отзыв.</p>
-            {% endfor %}
-        </div>
+    <div class="comments-section">
+        <h4>Отзывы о местности:</h4>
+        {% for comment in loc.comments.all %}
+            <p style="border-bottom: 1px dashed #ccc; padding-bottom: 5px;">
+                🗨 {{ comment.text }}
+            </p>
+        {% empty %}
+            <p>Пока никто не оставил отзыв.</p>
+        {% endfor %}
     </div>
-    {% endfor %}
+</div>
+{% endfor %}
+
+<div style="margin-top: 20px;">
+
+    {% if page_obj.has_previous %}
+        <a href="?page=1">Первая</a>
+        <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+    {% endif %}
+
+    <span>
+        Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+    </span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Вперёд</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">Последняя</a>
+    {% endif %}
+
+</div>
 
 </body>
 </html>

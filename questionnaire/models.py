@@ -12,6 +12,7 @@ class Questionnaire(models.Model):
     gpa = models.FloatField(verbose_name="Средний балл")
     avatar = models.ImageField(upload_to='avatars/', verbose_name="Твое фото")
     certificate = models.FileField(upload_to='certificates/', verbose_name="Твой документ")
+    views = models.PositiveIntegerField(default=0, verbose_name="Просмотры")
 
     def __str__(self):
         return self.full_name

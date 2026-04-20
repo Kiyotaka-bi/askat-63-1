@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Анкета</title>
+</head>
+<body>
+
+<h1>{{ anketa.full_name }}</h1>
+
+<p>Возраст: {{ anketa.age }}</p>
+<p>Любимый предмет: {{ anketa.favorite_subject }}</p>
+<p>Средний балл: {{ anketa.gpa }}</p>
+
+<p>Просмотры: {{ anketa.views }}</p>
+
+<a href="{% url 'q_list' %}">Назад</a>
+
+</body>
+</html>

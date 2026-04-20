@@ -14,6 +14,7 @@
         <p><b>Возраст:</b> {{ a.age }}</p>
         <p><b>Любимый предмет:</b> {{ a.favorite_subject }}</p>
         
+        
         <a href="{% url 'q_update' a.pk %}">Редактировать</a> | 
         <a href="{% url 'q_delete' a.pk %}">Удалить</a>
     </div>

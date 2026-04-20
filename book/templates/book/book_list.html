@@ -8,8 +8,14 @@
 
 <h1>Список всех книг</h1>
 
+<form method="get" style="margin-bottom: 20px;">
+    <input type="text" name="q" placeholder="Поиск книг..." value="{{ query }}">
+    <button type="submit">Найти</button>
+</form>
+
 {% for book in books %}
     <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+        
         <h2>
             <a href="{% url 'book_detail' book.pk %}">{{ book.title }}</a>
         </h2>
@@ -20,7 +26,9 @@
 
         <p><strong>Жанры:</strong> 
             {% for genre in book.genres.all %}
-                <span style="background: #f0f0f0; padding: 2px 5px; border-radius: 4px;">{{ genre.name }}</span>
+                <span style="background: #f0f0f0; padding: 2px 5px; border-radius: 4px;">
+                    {{ genre.name }}
+                </span>
             {% empty %}
                 Жанры не указаны
             {% endfor %}
@@ -29,14 +37,18 @@
         <div style="margin-top: 10px; background: #fafafa; padding: 10px;">
             <h4>Последние отзывы:</h4>
             {% for review in book.reviews.all %}
-                <p><i>"{{ review.review_text }}"</i> — <strong>{{ review.author_name }}</strong></p>
+                <p>
+                    <i>"{{ review.review_text }}"</i> — 
+                    <strong>{{ review.author_name }}</strong>
+                </p>
             {% empty %}
                 <p>Пока нет отзывов.</p>
             {% endfor %}
         </div>
+
     </div>
 {% empty %}
-    <p>В библиотеке пока пусто.</p>
+    <p>Ничего не найдено или библиотека пуста.</p>
 {% endfor %}
 
 </body>
