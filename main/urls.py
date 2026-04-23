@@ -16,28 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
 from django.conf import settings
 from django.conf.urls.static import static
 
+from book.views import FirstMessageView, BookListView, BookDetailView
 
-from book.views import first_message_view, book_list, book_detail
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('first_message/', first_message_view),  
-    
-    
-    path('', book_list, name='book_list'),
-    path('book/<int:pk>/', book_detail, name='book_detail'),
-    
-    
+    path('first_message/', FirstMessageView.as_view(), name='first_message'),
+    path('', BookListView.as_view(), name='book_list'),
+    path('book/<int:pk>/', BookDetailView.as_view(), name='book_detail'),
     path('anketa/', include('questionnaire.urls')),
-    
     path('horse/', include('horse_tour.urls')),
-
+    path('users/', include('users.urls')),   
     path('captcha/', include('captcha.urls')),
-    path('', include('users.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

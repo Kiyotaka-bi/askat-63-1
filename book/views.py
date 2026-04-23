@@ -1,33 +1,43 @@
-from django.shortcuts import render, get_object_or_404
+from django.views.generic import ListView, DetailView, View
+from django.shortcuts import render
 from django.http import HttpResponse
 from django.db.models import Q
 from .models import Book
 
 
-def book_list(request):
-    query = request.GET.get('q', '').strip()  # защита от None и пробелов
+class BookListView(ListView):
+    model = Book
+    template_name = 'book/book_list.html'
+    context_object_name = 'books'
 
-    books = Book.objects.all()
+    def get_queryset(self):
+        query = self.request.GET.get('q', '').strip()
 
-    if query:
-        books = books.filter(
-            Q(title__icontains=query) |
-            Q(description__icontains=query)
-        ).distinct()  # чтобы не было дубликатов
+        queryset = Book.objects.all()
 
-    return render(request, 'book/book_list.html', {
-        'books': books,
-        'query': query
-    })
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) |
+                Q(description__icontains=query)
+            ).distinct()
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('q', '').strip()
+        return context
 
 
-def book_detail(request, pk):
-    book = get_object_or_404(Book, pk=pk)
-    return render(request, 'book/book_detail.html', {'book': book})
+class BookDetailView(DetailView):
+    model = Book
+    template_name = 'book/book_detail.html'
+    context_object_name = 'book'
 
 
-def first_message_view(request):
-    return HttpResponse("""
+class FirstMessageView(View):
+    def get(self, request):
+        return HttpResponse("""
 Лев Толстой: "Все счастливые семьи похожи друг на друга..."
 
 Фёдор Достоевский: "Человек есть тайна..."

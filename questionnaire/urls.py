@@ -1,10 +1,16 @@
 from django.urls import path
-from . import views
+from .views import (
+    QuestionnaireListView,
+    QuestionnaireCreateView,
+    QuestionnaireUpdateView,
+    QuestionnaireDeleteView,
+    QuestionnaireDetailView
+)
 
 urlpatterns = [
-    path('', views.q_list, name='q_list'),
-    path('create/', views.q_create, name='q_create'),
-    path('<int:pk>/update/', views.q_update, name='q_update'),
-    path('<int:pk>/delete/', views.q_delete, name='q_delete'),
-    path('question/<int:pk>/', views.q_detail, name='q_detail'),
+    path('', QuestionnaireListView.as_view(), name='q_list'),
+    path('create/', QuestionnaireCreateView.as_view(), name='q_create'),
+    path('<int:pk>/update/', QuestionnaireUpdateView.as_view(), name='q_update'),
+    path('<int:pk>/delete/', QuestionnaireDeleteView.as_view(), name='q_delete'),
+    path('<int:pk>/', QuestionnaireDetailView.as_view(), name='q_detail'),
 ]

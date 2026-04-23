@@ -1,51 +1,53 @@
-from django.shortcuts import render
-from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.urls import reverse_lazy
 from .models import Questionnaire
 from .forms import QuestionnaireForm
 
 
-def q_list(request):
-    anketas = Questionnaire.objects.all()
-    return render(request, 'questionnaire/q_list.html', {'anketas': anketas})
+class QuestionnaireListView(ListView):
+    model = Questionnaire
+    template_name = 'questionnaire/q_list.html'
+    context_object_name = 'anketas'
 
 
-def q_create(request):
-    if request.method == "POST":
-        form = QuestionnaireForm(request.POST, request.FILES) 
-        if form.is_valid():
-            form.save()
-            return redirect('q_list')
-    else:
-        form = QuestionnaireForm()
-    return render(request, 'questionnaire/q_form.html', {'form': form, 'title': 'Создать анкету'})
+class QuestionnaireCreateView(CreateView):
+    model = Questionnaire
+    form_class = QuestionnaireForm
+    template_name = 'questionnaire/q_form.html'
+    success_url = reverse_lazy('q_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Создать анкету'
+        return context
 
 
-def q_update(request, pk):
-    anketa = get_object_or_404(Questionnaire, pk=pk)
-    if request.method == "POST":
-        form = QuestionnaireForm(request.POST, request.FILES, instance=anketa)
-        if form.is_valid():
-            form.save()
-            return redirect('q_list')
-    else:
-        form = QuestionnaireForm(instance=anketa)
-    return render(request, 'questionnaire/q_form.html', {'form': form, 'title': 'Изменить анкету'})
+class QuestionnaireUpdateView(UpdateView):
+    model = Questionnaire
+    form_class = QuestionnaireForm
+    template_name = 'questionnaire/q_form.html'
+    success_url = reverse_lazy('q_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Изменить анкету'
+        return context
 
 
-def q_delete(request, pk):
-    anketa = get_object_or_404(Questionnaire, pk=pk)
-    if request.method == "POST":
-        anketa.delete()
-        return redirect('q_list')
-    return render(request, 'questionnaire/q_confirm_delete.html', {'anketa': anketa})
+class QuestionnaireDeleteView(DeleteView):
+    model = Questionnaire
+    template_name = 'questionnaire/q_confirm_delete.html'
+    success_url = reverse_lazy('q_list')
+    context_object_name = 'anketa'
 
 
-def q_detail(request, pk):
-    anketa = get_object_or_404(Questionnaire, pk=pk)
+class QuestionnaireDetailView(DetailView):
+    model = Questionnaire
+    template_name = 'questionnaire/q_detail.html'
+    context_object_name = 'anketa'
 
-    anketa.views += 1
-    anketa.save()
-
-    return render(request, 'questionnaire/q_detail.html', {
-        'anketa': anketa
-    })
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        obj.views += 1
+        obj.save()
+        return obj
